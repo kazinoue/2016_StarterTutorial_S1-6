@@ -47,6 +47,19 @@ implementation
 
 {$R *.fmx}
 
+procedure TForm2.FormCreate(Sender: TObject);
+{ アプリ実行開始時の処理 }
+begin
+  // 乱数値を保持する変数の初期値は、有効な値以外にセットしておく。
+  RandomNumber := -1;
+
+  // 一部のコンポーネントについては、ここで表示不可設定および使用不可設定を確実に入れておく。
+  // こうしておけばデザインフォーム側でのプロパティの値によらず確実に設定できる。
+  Circle1.Visible  := False;
+  Line1.Visible    := False;
+  ListBox1.Enabled := False;
+end;
+
 procedure TForm2.UpdateNumber();
 { 出題する数値を更新する処理。このフォームだけで使用する。 }
 var
@@ -95,20 +108,8 @@ begin
   UpdateNumber;
 end;
 
-procedure TForm2.FormCreate(Sender: TObject);
-{ アプリ実行開始時の処理 }
-begin
-  // 乱数値を保持する変数の初期値は、有効な値以外にセットしておく。
-  RandomNumber := -1;
-
-  // 一部のコンポーネントについては、ここで表示不可設定および使用不可設定を確実に入れておく。
-  // こうしておけばデザインフォーム側でのプロパティの値によらず確実に設定できる。
-  Circle1.Visible  := False;
-  Line1.Visible    := False;
-  ListBox1.Enabled := False;
-end;
-
 procedure TForm2.ListBox1Click(Sender: TObject);
+{ リストボックスの数値をクリックしたときの処理 }
 begin
 
   // 出題された数字と回答した数字をペアで表示する。
@@ -152,8 +153,8 @@ begin
     Memo1.Lines.Insert(0,Format('正答数   %d'   , [CountSeikai]) );
     Memo1.Lines.Insert(0,Format('正答率   %.0f %%', [100*CountSeikai/10] ) );
 
+    // もう回答させないのでリストボックスを無効化
     ListBox1.Enabled := False;
-    exit;
   end;
 
 end;
