@@ -65,15 +65,14 @@ procedure TForm2.UpdateNumber();
 var
   RandomNumberNew: Integer;
 begin
-  //
-  RandomNumberNew := RandomNumber;
-
-  while RandomNumberNew = RandomNumber do
-  begin
+	// 直前のランダム値とは異なる値が出るまで乱数を取得し続ける。
+	// C++ の do ～ while とは終了条件が違うことに注意する。
+  repeat
     // 数値をランダムに書き換える。
     RandomNumberNew := Random(10);
-  end;
+  until RandomNumberNew <> RandomNumber;
 
+	// 最終的に決定された値を保持する。
   RandomNumber := RandomNumberNew;
   TextRandomNumber.text := RandomNumber.toString;
 
@@ -125,9 +124,11 @@ begin
   begin
     Memo1.Lines.Insert(0, '[正解]');
 
+    // Inc(CountSeikai) と書いてもよい。
     CountSeikai     := CountSeikai + 1;
     TextSeikai.Text := CountSeikai.toString;
 
+		// 〇を表示して×を消す
     Circle1.Visible := True;
     Line1.Visible   := False;
   end
@@ -136,9 +137,11 @@ begin
   begin
     Memo1.Lines.Insert(0, '[不正解]');
 
+    // Inc(CountMachigai) と書いてもよい。
     CountMachigai     := CountMachigai + 1;
     TextMachigai.Text := CountMachigai.toString;
 
+		// ×を表示して〇を消す
     Line1.Visible     := True;
     Circle1.Visible   := False;
   end;

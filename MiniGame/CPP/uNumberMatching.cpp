@@ -31,14 +31,13 @@ void __fastcall TForm1::UpdateNumber(void)
 {
 	int RandomNumberNew;
 
-	// RandomNumberNew を直前のランダム値で初期化する
-	RandomNumberNew = RandomNumber;
-
-	// 直前のランダム値とは異なる値が出るまで乱数を取得し続ける。
-	while (RandomNumberNew == RandomNumber) {
+	// 直前のランダム値と異なる値が出ている間は乱数を取得し続ける。
+	// Delphi の repeat ～ until とは終了条件が違うことに注意する。
+	do {
 		// 数値をランダムに書き換える。
 		RandomNumberNew = Random(10);
 	}
+	while (RandomNumberNew == RandomNumber);
 
 	// 最終的に決定された値を代入する。
 	RandomNumber = RandomNumberNew;
@@ -94,9 +93,11 @@ void __fastcall TForm1::ListBox1Click(TObject *Sender)
 		// 正しい回答の場合
 		Memo1->Lines->Insert(0, L"[正解]");
 
+		// C/C++ の書き方なら、普通は CountSeikai++ と書く。
 		CountSeikai      = CountSeikai + 1;
 		TextSeikai->Text = IntToStr(CountSeikai);
 
+		// 〇を表示して×を消す
 		Circle1->Visible = True;
 		Line1->Visible   = False;
 	}
@@ -105,9 +106,11 @@ void __fastcall TForm1::ListBox1Click(TObject *Sender)
 		// 間違った回答の場合
 		Memo1->Lines->Insert(0, L"[不正解]");
 
+		// C/C++ の書き方なら、普通は CountMachigai++ と書く。
 		CountMachigai      = CountMachigai + 1;
 		TextMachigai->Text = IntToStr(CountMachigai);
 
+		// ×を表示して〇を消す
 		Line1->Visible     = True;
 		Circle1->Visible   = False;
 	}
